@@ -1,5 +1,4 @@
 import request from "supertest";
-import { expect } from "chai";
 import { app } from "../js/index.js";
 
 describe("Server checks", () => {
@@ -8,8 +7,18 @@ describe("Server checks", () => {
   });
 });
 
-describe("auth routes", () => {
-  it("/auth responds with 200", (done) => {
-    request(app).get("/auth").expect(200, done);
+describe("Dashboard response", () => {
+  it("/dashboard responds with 200", (done) => {
+    request(app).get("/dashboard").expect(200, done);
+  });
+});
+
+describe("Post response", () => {
+  it("/post responds with 200", (done) => {
+    request(app)
+      .post("/post")
+      .set("Accept", "application/json")
+      .send({ note: "Note here" })
+      .expect(200, done);
   });
 });
