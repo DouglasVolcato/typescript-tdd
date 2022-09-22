@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc -w",
     "dev": "nodemon ./src/js/index.js",
     "test": "mocha ./src/test/test.js"
   },
