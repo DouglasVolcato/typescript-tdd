@@ -1,24 +1,47 @@
-import request from "supertest";
+import chai from "chai";
+import chaiHttp from "chai-http";
 import { app } from "../js/index.js";
 
-describe("Server checks", () => {
-  it("App is running without errors", (done) => {
-    request(app).get("/").expect(200, done);
+const should = chai.should();
+chai.use(chaiHttp);
+
+describe("/ Initiation", () => {
+  it("It should initiate the app", (done) => {
+    chai
+      .request(app)
+      .get("/")
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property("message").eql("App is running.");
+        done();
+      });
   });
 });
 
-describe("Dashboard response", () => {
-  it("/dashboard responds with 200", (done) => {
-    request(app).get("/dashboard").expect(200, done);
-  });
-});
+describe("/dashboard", () => {
+  it("It should return the dashboard", (done) => {
+    chai.request(app).get("/dashboard").end((err,res) => {
+      res.should.have.status(200)
+      res.body.should.have.property("message")
+      done()
+    })
+  })
+})
 
-describe("Post response", () => {
-  it("/post responds with 200", (done) => {
-    request(app)
+describe("/post note", () => {
+  it("It should post a note", (done) => {
+    const note = {
+      note: "Note here.",
+    };
+    chai
+      .request(app)
       .post("/post")
-      .set("Accept", "application/json")
-      .send({ note: "Note here" })
-      .expect(200, done);
+      .send(note)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        res.body.should.have.property("note");
+        done();
+      });
   });
 });
